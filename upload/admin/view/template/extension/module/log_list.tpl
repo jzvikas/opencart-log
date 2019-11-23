@@ -199,7 +199,7 @@
   </div>
   <script type="text/javascript"><!--
 $('#button-filter').on('click', function() {
-    var url = 'index.php?route=module/log&token=<?php echo $token; ?>';
+    var url = 'index.php?route=extension/module/log&token=<?php echo $token; ?>';
 
     var filter_event = $('input[name=\'filter_event\']').val();
 
