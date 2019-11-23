@@ -52,7 +52,7 @@ class ControllerModuleLog extends Controller {
             $event = str_replace('_','.',$event);
 
             if($method == $event) {
-                $this->load->model('module/log');
+                $this->load->model('extension/module/log');
 
                 $event_arr = explode('.', $event);
                 $event_desc = '';
@@ -65,7 +65,7 @@ class ControllerModuleLog extends Controller {
                 $log_data['data'] = json_encode($args);
                 $log_data['user_id'] = isset($this->session->data['api_id']) ? $this->session->data['api_id'] : '';
 
-                $this->model_module_log->addLog($log_data);
+                $this->model_extension_module_log->addLog($log_data);
                 break;
             }
         }
