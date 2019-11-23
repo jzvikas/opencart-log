@@ -155,7 +155,7 @@ class ControllerModuleLog extends Controller {
     );
 
     public function index() {
-        $this->load->language('module/log');
+        $this->load->language('extension/module/log');
 
         $this->document->setTitle($this->language->get('heading_title'));
         $this->document->addStyle('view/javascript/jquery/json-viewer/jquery.json-viewer.css');
@@ -233,17 +233,17 @@ class ControllerModuleLog extends Controller {
 
         $data['breadcrumbs'][] = array(
             'text' => $this->language->get('text_home'),
-            'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], 'SSL')
+            'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
         );
 
         $data['breadcrumbs'][] = array(
-            'text' => $this->language->get('text_module'),
-            'href' => $this->url->link('extension/module', 'token=' . $this->session->data['token'], 'SSL')
+            'text' => $this->language->get('text_extension'),
+            'href' => $this->url->link('extension/extension', 'token=' . $this->session->data['token'] . '&type=module', true));
         );
 
         $data['breadcrumbs'][] = array(
             'text' => $this->language->get('heading_title'),
-            'href' => $this->url->link('module/log', 'token=' . $this->session->data['token'] . $url, 'SSL')
+            'href' => $this->url->link('extension/module/log', 'token=' . $this->session->data['token'] . $url, true)
         );
 
         $data['logs'] = array();
@@ -258,9 +258,9 @@ class ControllerModuleLog extends Controller {
             'limit'           => $this->config->get('config_limit_admin')
         );
 
-        $logs_total = $this->model_module_log->getTotalLogs($filter_data);
+        $logs_total = $this->model_extension_module_log->getTotalLogs($filter_data);
 
-        $results = $this->model_module_log->getLogs($filter_data);
+        $results = $this->model_extension_module_log->getLogs($filter_data);
 
         $this->load->model('user/user');
 
@@ -298,14 +298,9 @@ class ControllerModuleLog extends Controller {
 
         $data['button_filter'] = $this->language->get('button_filter');
 
-        if ($this->request->server['HTTPS']) {
-            $ssl = 'SSL';
-        } else {
-            $ssl = null;
-        }
+        $data['action_clear'] = $this->url->link('extension/module/log/clear', 'token='. $this->session->data['token'], true);
 
-        $data['action_clear'] = $this->url->link('module/log/clear', 'token='. $this->session->data['token'], $ssl);
-        $data['action_config'] = $this->url->link('module/log/config', 'token='. $this->session->data['token'], $ssl);
+        $data['action_config'] = $this->url->link('extension/module/log/config', 'token='. $this->session->data['token'], true);
 
         $data['token'] = $this->session->data['token'];
 
@@ -333,8 +328,8 @@ class ControllerModuleLog extends Controller {
             $url .= '&page=' . $this->request->get['page'];
         }
 
-        $data['sort_event'] = $this->url->link('module/log', 'token=' . $this->session->data['token'] . '&sort=event' . $url, 'SSL');
-        $data['sort_date_added'] = $this->url->link('module/log', 'token=' . $this->session->data['token'] . '&sort=date_added' . $url, 'SSL');
+        $data['sort_event'] = $this->url->link('extension/module/log', 'token=' . $this->session->data['token'] . '&sort=event' . $url, true');
+        $data['sort_date_added'] = $this->url->link('extension/module/log', 'token=' . $this->session->data['token'] . '&sort=date_added' . $url, true);
 
         $url = '';
 
@@ -362,7 +357,7 @@ class ControllerModuleLog extends Controller {
         $pagination->total = $logs_total;
         $pagination->page = $page;
         $pagination->limit = $this->config->get('config_limit_admin');
-        $pagination->url = $this->url->link('module/log', 'token=' . $this->session->data['token'] . $url . '&page={page}', 'SSL');
+        $pagination->url = $this->url->link('exension/module/log', 'token=' . $this->session->data['token'] . $url . '&page={page}', true);
 
         $data['pagination'] = $pagination->render();
 
@@ -376,13 +371,13 @@ class ControllerModuleLog extends Controller {
         $data['order'] = $order;
 
         $data['events'] = $this->events;
-        $data['active_events'] = $this->model_module_log->getActiveEvents();
+        $data['active_events'] = $this->model_extension_module_log->getActiveEvents();
 
         $data['header'] = $this->load->controller('common/header');
         $data['column_left'] = $this->load->controller('common/column_left');
         $data['footer'] = $this->load->controller('common/footer');
 
-        $this->response->setOutput($this->load->view('module/log_list.tpl', $data));
+        $this->response->setOutput($this->load->view('extension/module/log_list', $data));
     }
 
     public function config() {
@@ -394,7 +389,7 @@ class ControllerModuleLog extends Controller {
 
             foreach($this->request->post['action'] as $action) {
                 if(in_array($action, $this->events)) {
-                    $this->model_extension_event->addEvent('log', $action, 'module/log/' . str_replace('.', '_', $action));
+                    $this->model_extension_event->addEvent('log', $action, 'extension/module/log/' . str_replace('.', '_', $action));
                 }
             }
 
@@ -405,9 +400,9 @@ class ControllerModuleLog extends Controller {
     }
 
     public function clear() {
-        $this->load->model('module/log');
+        $this->load->model('extension/module/log');
 
-        $this->model_module_log->clear();
+        $this->model_extension_module_log->clear();
     }
 
     public function __call($method, $args) {
@@ -418,7 +413,7 @@ class ControllerModuleLog extends Controller {
             $event = str_replace('_','.',$event);
 
             if($method == $event) {
-                $this->load->model('module/log');
+                $this->load->model('extension/module/log');
 
                 $event_arr = explode('.', $event);
                 $event_desc = '';
@@ -431,7 +426,7 @@ class ControllerModuleLog extends Controller {
                 $log_data['data'] = json_encode($args);
                 $log_data['user_id'] = $this->user->getId();
 
-                $this->model_module_log->addLog($log_data);
+                $this->model_extension_module_log->addLog($log_data);
 
                 break;
             }
