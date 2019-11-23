@@ -453,7 +453,7 @@ class ControllerExtensionModuleLog extends Controller {
         $this->load->model('extension/event');
 
         foreach($this->events as $event) {
-            $this->model_extension_event->addEvent('log', $event, 'module/log/' . str_replace('.', '_', $event));
+            $this->model_extension_event->addEvent('log', $event, 'extension/module/log/' . str_replace('.', '_', $event));
         }
     }
 
