@@ -328,7 +328,7 @@ class ControllerModuleLog extends Controller {
             $url .= '&page=' . $this->request->get['page'];
         }
 
-        $data['sort_event'] = $this->url->link('extension/module/log', 'token=' . $this->session->data['token'] . '&sort=event' . $url, true');
+        $data['sort_event'] = $this->url->link('extension/module/log', 'token=' . $this->session->data['token'] . '&sort=event' . $url, true);
         $data['sort_date_added'] = $this->url->link('extension/module/log', 'token=' . $this->session->data['token'] . '&sort=date_added' . $url, true);
 
         $url = '';
