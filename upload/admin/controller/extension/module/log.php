@@ -1,5 +1,5 @@
 <?php
-class ControllerModuleLog extends Controller {
+class ControllerExtensionModuleLog extends Controller {
 
     private $events = array(
         'pre.admin.product.add',
