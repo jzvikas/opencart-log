@@ -161,7 +161,7 @@ class ControllerExtensionModuleLog extends Controller {
         $this->document->addStyle('view/javascript/jquery/json-viewer/jquery.json-viewer.css');
         $this->document->addScript('view/javascript/jquery/json-viewer/jquery.json-viewer.js');
 
-        $this->load->model('module/log');
+        $this->load->model('extension/module/log');
 
         $this->getList();
     }
