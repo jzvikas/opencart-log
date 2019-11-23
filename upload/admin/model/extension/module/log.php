@@ -1,5 +1,5 @@
 <?php
-class ModelModuleLog extends Model {
+class ModelExtensionModuleLog extends Model {
 
     public function addLog($data) {
 
